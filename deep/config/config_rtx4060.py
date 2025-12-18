@@ -40,7 +40,7 @@ def get_rtx4060_config() -> Config:
         train_dir="train",
         val_dir="val",
         test_dir="test",
-        classes=["cordana", "healthy", "pestalotiopsis", "sigatoka"],
+        classes=["cordana", "fusarium_r4t", "healthy", "moko", "pestalotiopsis", "sigatoka"],
         image_size=(224, 224),
         # Optimizado para RTX 4060
         num_workers=4,  # ✅ Balance óptimo CPU-GPU

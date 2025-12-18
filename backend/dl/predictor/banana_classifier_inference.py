@@ -90,7 +90,7 @@ class BananaClassifierInference:
             drop_path_rate = model_config.get("drop_path_rate", 0.1)
         else:
             # Default
-            classes = ["cordana", "healthy", "pestalotiopsis", "sigatoka"]
+            classes = ["cordana", "fusarium_r4t", "healthy", "moko", "pestalotiopsis", "sigatoka"]
             model_name = "convnext_tiny"
             use_custom_head = True
             hidden_dims = None

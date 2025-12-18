@@ -16,7 +16,7 @@ Sistema de clasificación de enfermedades de banano usando Deep Learning con PyT
 
 ## ✨ Características
 
-- **Clasificación de 4 enfermedades**: Cordana, Healthy, Pestalotiopsis, Sigatoka
+- **Clasificación de 6 enfermedades**: Cordana, Fusarium R4T, Healthy, Moko, Pestalotiopsis, Sigatoka
 - **Arquitecturas SOTA**: ConvNeXt, EfficientNetV2, Swin Transformer, Vision Transformer
 - **API REST con FastAPI**: Endpoints para predicción, historial y estadísticas
 - **Base de datos PostgreSQL**: Almacenamiento de predicciones y feedback
@@ -110,17 +110,23 @@ Organiza tus imágenes en la siguiente estructura:
 dataset/
 ├── train/
 │   ├── cordana/
+│   ├── fusarium_r4t/
 │   ├── healthy/
+│   ├── moko/
 │   ├── pestalotiopsis/
 │   └── sigatoka/
 ├── val/
 │   ├── cordana/
+│   ├── fusarium_r4t/
 │   ├── healthy/
+│   ├── moko/
 │   ├── pestalotiopsis/
 │   └── sigatoka/
 └── test/
     ├── cordana/
+    ├── fusarium_r4t/
     ├── healthy/
+    ├── moko/
     ├── pestalotiopsis/
     └── sigatoka/
 ```
@@ -290,7 +296,9 @@ Respuesta:
   "most_common_class": "sigatoka",
   "class_distribution": {
     "cordana": 30,
+    "fusarium_r4t": 15,
     "healthy": 45,
+    "moko": 20,
     "pestalotiopsis": 25,
     "sigatoka": 50
   }

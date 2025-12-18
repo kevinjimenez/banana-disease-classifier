@@ -364,7 +364,7 @@ if __name__ == "__main__":
 
     # Crear dataset de prueba
     data_dir = "./data/train"
-    classes = ["cordana", "healthy", "pestalotiopsis", "sigatoka"]
+    classes = ["cordana", "fusarium_r4t", "healthy", "moko", "pestalotiopsis", "sigatoka"]
 
     # Transformaciones
     train_transform = get_transforms("train", augmentation_level="medium")

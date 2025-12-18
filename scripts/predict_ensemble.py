@@ -40,7 +40,7 @@ def load_model_from_checkpoint(checkpoint_path, device="cuda"):
         classes = config_dict["data"]["classes"]
         model_name = config_dict["model"].get("name", "convnext_base")
     else:
-        classes = ["cordana", "healthy", "pestalotiopsis", "sigatoka"]
+        classes = ["cordana", "fusarium_r4t", "healthy", "moko", "pestalotiopsis", "sigatoka"]
         model_name = "convnext_base"
 
     # Crear modelo

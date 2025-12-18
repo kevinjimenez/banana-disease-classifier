@@ -48,9 +48,9 @@ def load_model_from_checkpoint(checkpoint_path: str, device: str = "cuda"):
         num_classes = config_dict["model"]["num_classes"]
     else:
         # Default
-        classes = ["cordana", "healthy", "pestalotiopsis", "sigatoka"]
+        classes = ["cordana", "fusarium_r4t", "healthy", "moko", "pestalotiopsis", "sigatoka"]
         model_name = "convnext_base"
-        num_classes = 4
+        num_classes = 6
 
     # Crear modelo
     model = BananaClassifier(
