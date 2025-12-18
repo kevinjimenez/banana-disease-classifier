@@ -43,5 +43,5 @@ htmlcov/
 # MyPy
 .mypy_cache/
 
-
+dataset/train_backup/
 *.pth

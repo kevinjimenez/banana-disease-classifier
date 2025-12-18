@@ -5,6 +5,11 @@ Carga el modelo entrenado y realiza predicciones.
 
 import sys
 from pathlib import Path
+
+# Agregar el directorio raíz del proyecto al path
+PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
 import torch
 import torch.nn.functional as F
 from torchvision import transforms
@@ -13,7 +18,7 @@ import numpy as np
 from typing import Dict, List, Tuple, Union
 import json
 
-from dl.architectures.banana_classifier import BananaClassifier
+from deep.core.inference import BananaClassifier
 
 
 class BananaClassifierInference:
