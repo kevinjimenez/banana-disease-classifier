@@ -84,6 +84,11 @@ class Trainer:
                 self.use_amp = False
                 self.scaler = None
                 print("[INFO] AMP desactivado en MPS (no soportado)")
+            elif "cpu" in device:
+                # CPU no soporta AMP, desactivar
+                self.use_amp = False
+                self.scaler = None
+                print("[INFO] AMP desactivado en CPU (no soportado)")
             else:
                 self.scaler = None
         else:
