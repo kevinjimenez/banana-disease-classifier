@@ -1,0 +1,15 @@
+{
+  "total_images": 718,
+  "corrupted": [],
+  "duplicates": [],
+  "quality_issues": [
+    {
+      "path": "dataset/train/sigatoka/289.jpeg",
+      "issues": [
+        "bajo_contraste"
+      ]
+    }
+  ],
+  "too_small": [],
+  "removed_for_balance": []
+}

@@ -1,0 +1,47 @@
+# Ambiente virtual (en raíz del proyecto)
+bin/
+include/
+lib/
+lib64/
+pyvenv.cfg
+share/
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Variables de entorno
+.env
+
+# Distribución / empaquetado
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# MyPy
+.mypy_cache/
+
+
+*.pth
