@@ -1,0 +1,79 @@
+data:
+  augmentation_level: heavy
+  classes:
+  - cordana
+  - healthy
+  - pestalotiopsis
+  - sigatoka
+  data_dir: ./dataset/train
+  image_size: !!python/tuple
+  - 224
+  - 224
+  num_workers: 4
+  pin_memory: true
+  test_dir: test
+  test_split: 0.15
+  train_dir: train
+  train_split: 0.7
+  use_augmentation: true
+  val_dir: val
+  val_split: 0.15
+device: mps
+experiment_name: banana_experiment
+interpretability:
+  ig_steps: 50
+  methods:
+  - integrated_gradients
+  - gradcam
+  - occlusion
+  num_examples_per_class: 5
+  occlusion_size: 15
+  save_visualizations: true
+  visualization_dir: experiments/banana_experiment/interpretations
+logging:
+  checkpoint_dir: ./experiments/banana_experiment/checkpoints
+  eval_interval: 1
+  log_dir: experiments/banana_experiment/logs
+  log_interval: 10
+  output_dir: experiments/banana_experiment/outputs
+  use_tensorboard: true
+  use_wandb: false
+  verbose: true
+  wandb_entity: null
+  wandb_project: banana-disease-classification
+  wandb_tags:
+  - baseline
+model:
+  drop_path_rate: 0.1
+  drop_rate: 0.2
+  hidden_dims:
+  - 512
+  - 256
+  name: convnext_tiny
+  num_classes: 4
+  pretrained: true
+  use_custom_head: true
+seed: 42
+training:
+  batch_size: 32
+  cutmix_alpha: 1.0
+  early_stopping_min_delta: 0.001
+  early_stopping_patience: 10
+  epochs: 30
+  gradient_accumulation_steps: 1
+  label_smoothing: 0.1
+  learning_rate: 5.0e-05
+  loss_fn: cross_entropy
+  max_grad_norm: 1.0
+  min_lr: 1.0e-07
+  mixup_alpha: 0.2
+  momentum: 0.9
+  optimizer: adamw
+  save_best_only: true
+  save_frequency: 5
+  scheduler: cosine
+  use_amp: true
+  use_cutmix: true
+  use_mixup: true
+  warmup_epochs: 5
+  weight_decay: 1.0e-05
