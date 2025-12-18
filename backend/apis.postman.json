@@ -1,0 +1,169 @@
+{
+    "info": {
+        "name": "tesis",
+        "description": "",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "health",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "GET",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8000/health",
+                    "path": [
+                        "health"
+                    ],
+                    "host": [
+                        "localhost"
+                    ],
+                    "protocol": "http",
+                    "port": "8000",
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "model info",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "GET",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8000/model/info",
+                    "path": [
+                        "model",
+                        "info"
+                    ],
+                    "host": [
+                        "localhost"
+                    ],
+                    "protocol": "http",
+                    "port": "8000",
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "predict",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "file",
+                            "value": "file:///Users/kevino-jimenez/works/personal/master/tesis_computer_vision/banana_disease_classifier/data/test/sigatoka/374.jpeg",
+                            "type": "file",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8000/predict",
+                    "path": [
+                        "predict"
+                    ],
+                    "host": [
+                        "localhost"
+                    ],
+                    "protocol": "http",
+                    "port": "8000",
+                    "query": [
+                        {
+                            "key": "return_all_probs",
+                            "value": "true",
+                            "description": "",
+                            "type": "string"
+                        }
+                    ],
+                    "variable": []
+                }
+            },
+            "response": [],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "historial",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "GET",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8000/history",
+                    "path": [
+                        "history"
+                    ],
+                    "host": [
+                        "localhost"
+                    ],
+                    "protocol": "http",
+                    "port": "8000",
+                    "query": [
+                        {
+                            "key": "skip",
+                            "value": "0",
+                            "description": "",
+                            "type": "string"
+                        },
+                        {
+                            "key": "limit",
+                            "value": "100",
+                            "description": "",
+                            "type": "string"
+                        },
+                        {
+                            "key": "class_filter",
+                            "value": "sigatoka",
+                            "description": "",
+                            "type": "string"
+                        }
+                    ],
+                    "variable": []
+                }
+            },
+            "response": [],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        }
+    ],
+    "variable": [],
+    "event": [],
+    "auth": {}
+}
