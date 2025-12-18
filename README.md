@@ -183,6 +183,124 @@ python deep/evaluate.py \
   --test-dir dataset/test
 ```
 
+## ⚡ Entrenamiento YOLOv8 (Alternativa Rápida)
+
+YOLOv8 ofrece un modelo más rápido y ligero, ideal para aplicaciones en tiempo real.
+
+### 1. Entrenamiento rápido con script
+
+```bash
+# Ejecutar script automático
+bash train_yolo_quick.sh
+```
+
+### 2. Entrenamiento manual con opciones
+
+```bash
+# Entrenamiento básico (auto-detecta dispositivo)
+python scripts/train_yolo.py --data_dir ./dataset --model_size s --epochs 50
+
+# Con configuración avanzada
+python scripts/train_yolo.py \
+  --data_dir ./dataset \
+  --model_size m \
+  --epochs 100 \
+  --batch_size 64 \
+  --lr 0.001 \
+  --device auto
+
+# Prueba rápida
+python scripts/train_yolo.py \
+  --data_dir ./dataset \
+  --model_size n \
+  --epochs 10 \
+  --quick_test
+```
+
+### 3. Tamaños de modelo disponibles
+
+| Modelo | Parámetros | Velocidad | Precisión | Uso |
+|--------|-----------|-----------|-----------|-----|
+| **n** (nano) | 1.4M | Muy rápido | Media | Dispositivos móviles |
+| **s** (small) | 3.2M | Rápido | Media-Alta | **Recomendado** |
+| **m** (medium) | 6.4M | Medio | Alta | Balance óptimo |
+| **l** (large) | 16.5M | Lento | Muy alta | Máxima precisión |
+| **x** (xlarge) | 57.4M | Muy lento | Máxima | Investigación |
+
+### 4. Resultados
+
+Los modelos entrenados se guardan en:
+```
+runs/yolo_classify/yolov8{size}_*/
+├── weights/
+│   ├── best.pt          # Mejor modelo
+│   └── last.pt          # Último checkpoint
+├── results.csv          # Métricas por época
+├── results.png          # Gráficas
+└── confusion_matrix.png # Matriz de confusión
+```
+
+## 📊 Benchmark: Comparación CNN vs YOLO
+
+Compara el rendimiento de diferentes arquitecturas para tu tesis.
+
+### 1. Ejecutar benchmark completo
+
+```bash
+# Benchmark automático (entrena y compara todos los modelos)
+python scripts/benchmark.py \
+  --data_dir ./dataset \
+  --output_dir ./benchmark_results
+
+# Modo rápido (menos épocas)
+python scripts/benchmark.py \
+  --data_dir ./dataset \
+  --quick \
+  --output_dir ./benchmark_results
+```
+
+### 2. Benchmark con modelos específicos
+
+```bash
+# Comparar modelos específicos
+python scripts/benchmark.py \
+  --data_dir ./dataset \
+  --cnn_models convnext_tiny convnext_base \
+  --yolo_models s m \
+  --epochs 50 \
+  --output_dir ./benchmark_results
+```
+
+### 3. Resultados del Benchmark
+
+El benchmark genera:
+
+```
+benchmark_results/
+├── results.json                 # Métricas completas
+├── comparison_plots.png         # Gráficas comparativas
+├── BENCHMARK_REPORT.md          # Reporte detallado
+└── benchmark_YYYYMMDD_HHMMSS/
+    ├── accuracy_comparison.png
+    ├── speed_comparison.png
+    └── confusion_matrices/
+```
+
+### 4. Métricas Comparadas
+
+- **Rendimiento**: Accuracy, Precision, Recall, F1-Score
+- **Eficiencia**: Tiempo de inferencia, FPS, Memoria GPU
+- **Tamaño**: Número de parámetros, Tamaño del modelo (MB)
+- **Entrenamiento**: Tiempo de entrenamiento, Épocas
+
+### 5. Ejemplo de Resultados
+
+| Modelo | Accuracy | Params | Inferencia | Tamaño |
+|--------|----------|--------|------------|--------|
+| ConvNeXt-base | 96.5% | 89M | 25ms | 350MB |
+| YOLOv8s | 94.4% | 5M | 2.7ms | 12MB |
+| YOLOv8m | 95.8% | 12M | 5ms | 25MB |
+
 ## 🚀 Ejecución del Backend (API)
 
 ### 1. Verificar configuración
