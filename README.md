@@ -10,6 +10,7 @@ Sistema de clasificación de enfermedades de banano usando Deep Learning con PyT
 - [Configuración](#configuración)
 - [Entrenamiento del Modelo](#entrenamiento-del-modelo)
 - [Ejecución del Backend (API)](#ejecución-del-backend-api)
+- [Ejecución del Frontend](#ejecución-del-frontend)
 - [Uso de la API](#uso-de-la-api)
 - [Estructura del Proyecto](#estructura-del-proyecto)
 
@@ -296,6 +297,63 @@ Respuesta:
 }
 ```
 
+## 🖥️ Ejecución del Frontend
+
+El frontend es una aplicación web estática que se conecta a la API del backend.
+
+### Capturas de Pantalla
+
+**Interfaz Principal**
+
+![Frontend Screenshot](./frontend/screenshot.png)
+
+**Resultado de Predicción**
+
+![Prediction Result](./frontend/screenshot-result.png)
+
+### 1. Asegúrate de que el backend esté corriendo
+
+El frontend necesita que el backend esté activo en `http://localhost:8000`:
+
+```bash
+# En una terminal
+cd backend
+python3 api/api.py
+```
+
+### 2. Iniciar el servidor frontend
+
+Abre una nueva terminal y ejecuta:
+
+#### Opción A: Con Python (Recomendado)
+
+```bash
+cd frontend
+python3 -m http.server 3000
+```
+
+#### Opción B: Con Node.js
+
+```bash
+cd frontend
+npx http-server -p 3000
+```
+
+#### Opción C: Con Live Server (VS Code)
+
+Si usas VS Code, instala la extensión "Live Server" y haz clic derecho en `index.html` → "Open with Live Server"
+
+### 3. Abrir en el navegador
+
+Visita: http://localhost:3000
+
+### Funcionalidades del Frontend
+
+- **Subir imagen**: Arrastra y suelta o selecciona una imagen de hoja de banano
+- **Predicción en tiempo real**: Visualiza la clase predicha y el nivel de confianza
+- **Métricas de modelos**: Compara ConvNeXt, ViT y YOLOv8
+- **Interfaz moderna**: Diseño responsivo con tema oscuro
+
 ## 📁 Estructura del Proyecto
 
 ```
@@ -311,6 +369,12 @@ banana-disease-classifier/
 │   │   └── predictor/
 │   │       └── banana_classifier_inference.py
 │   └── utils/                 # Utilidades
+│
+├── frontend/                  # Interfaz Web
+│   ├── index.html            # Página principal
+│   ├── app.js                # Lógica de la aplicación
+│   ├── styles.css            # Estilos
+│   └── screenshot.png        # Captura de pantalla
 │
 ├── deep/                      # Entrenamiento y modelos
 │   ├── configs/              # Configuraciones
@@ -370,8 +434,8 @@ MIT License
 
 ## 👥 Contribuciones
 
-Las contribuciones son bienvenidas. Por favor abre un issue o pull request.
+- Carolina Ortiz
+- Alisson Lopez
+- Kevin Jiménez
+- Cristian Cobos
 
-## 📧 Contacto
-
-Kevin Jiménez - [@kevinjimenez](https://github.com/kevinjimenez)

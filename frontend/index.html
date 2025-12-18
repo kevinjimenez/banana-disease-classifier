@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Detección de patologías en hoja de banano</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-header__left">
+      <h1>Sistema de diagnóstico de banano</h1>
+    </div>
+
+    <div class="app-header__right">
+      <button id="menuToggle" class="menu-toggle" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav id="menuDropdown" class="menu-dropdown">
+        <ul>
+          <li><button id="btnVerHistorial" class="menu-item">Ver historial</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <section class="card upload-card">
+      <h2>Subir imagen para análisis</h2>
+      <p class="hint">
+        Sube una imagen de una hoja de banano para estimar la enfermedad y
+        visualizar las métricas de cada modelo (ConvNeXt, ViT y YOLOv8).
+      </p>
+
+      <input id="fileInput" type="file" accept="image/*" hidden />
+      <button id="btnSubirImagen" class="primary-btn">
+        Subir imagen
+      </button>
+
+      <div id="previewContainer" class="preview-container hidden">
+        <p class="preview-title">Vista previa</p>
+        <img id="previewImage" alt="Vista previa de la imagen seleccionada" />
+      </div>
+
+      <p id="statusMessage" class="status-message"></p>
+    </section>
+
+    <section class="card results-card">
+      <h2>Resultado del diagnóstico</h2>
+
+      <div id="noResults" class="no-results">
+        Aún no se ha analizado ninguna imagen.
+      </div>
+
+      <div id="resultsContainer" class="hidden">
+        <p class="result-label">
+          Enfermedad estimada:
+          <span id="predictedLabel" class="result-value"></span>
+        </p>
+        <p class="result-label">
+          Confianza:
+          <span id="predictedConfidence" class="result-value"></span>
+        </p>
+
+        <h3>Métricas por modelo</h3>
+        <table class="metrics-table">
+          <thead>
+            <tr>
+              <th>Modelo</th>
+              <th>Métrica</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody id="metricsBody">
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <aside id="historyPanel" class="history-panel hidden">
+    <div class="history-header">
+      <h2>Historial local de predicciones</h2>
+      <button id="closeHistory" class="close-btn">✕</button>
+    </div>
+    <div id="historyContent" class="history-content">
+    </div>
+  </aside>
+
+  <footer class="app-footer">
+    <p>
+      Prototipo.
+    </p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
