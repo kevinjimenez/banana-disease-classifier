@@ -35,22 +35,23 @@ from torch.utils.data import DataLoader
 def detect_device():
     """
     Detecta automáticamente el mejor dispositivo disponible.
-    
+
     Returns:
         str: 'cuda', 'mps', o 'cpu'
     """
     if torch.cuda.is_available():
-        device = 'cuda'
+        device = "cuda"
         device_name = torch.cuda.get_device_name(0)
         print(f"[INFO] GPU CUDA detectada: {device_name}")
     elif torch.backends.mps.is_available():
-        device = 'mps'
+        device = "mps"
         print(f"[INFO] Apple Silicon (MPS) detectado")
     else:
-        device = 'cpu'
+        device = "cpu"
         print(f"[INFO] Usando CPU (no se detectó GPU)")
-    
+
     return device
+
 
 # Métricas
 try:
@@ -144,6 +145,8 @@ class ModelBenchmark:
         output_dir: str,
         config: Optional[BenchmarkConfig] = None,
         device: str = "cuda",
+        use_checkpoints: bool = False,
+        checkpoint_dir: str = "checkpoints",
     ):
         self.data_dir = Path(data_dir)
         self.output_dir = Path(output_dir)
@@ -151,6 +154,8 @@ class ModelBenchmark:
 
         self.config = config or BenchmarkConfig()
         self.device = device
+        self.use_checkpoints = use_checkpoints
+        self.checkpoint_dir = Path(checkpoint_dir)
 
         self.results: Dict[str, ModelMetrics] = {}
         self.timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -167,6 +172,11 @@ class ModelBenchmark:
         print(f"Modelos CNN: {self.config.cnn_models}")
         print(f"Modelos YOLO: {self.config.yolo_models}")
         print(f"Repeticiones: {self.config.repetitions}")
+        print(
+            f"Usar checkpoints: {'Sí' if self.use_checkpoints else 'No (entrenar desde cero)'}"
+        )
+        if self.use_checkpoints:
+            print(f"Directorio checkpoints: {self.checkpoint_dir}")
         print("=" * 70 + "\n")
 
         # Benchmark CNNs (timm)
@@ -203,11 +213,11 @@ class ModelBenchmark:
 
     def _benchmark_cnn(self, model_name: str) -> ModelMetrics:
         """Benchmark de modelo CNN usando timm."""
-        from deep.core.inference import BananaClassifier
-        from deep.core.dataset import BananaDiseaseDataset, create_dataloaders
-        from deep.core.transforms import get_transforms
-        from deep.core.trainer import Trainer
-        from deep.config.config import Config
+        from cnn.core.inference import BananaClassifier
+        from cnn.core.dataset import BananaDiseaseDataset, create_dataloaders
+        from cnn.core.transforms import get_transforms
+        from cnn.core.trainer import Trainer
+        from cnn.config.config import Config
 
         # Configuración
         config = Config()
@@ -273,27 +283,44 @@ class ModelBenchmark:
             num_workers=4,
         )
 
-        # Entrenar
+        # Entrenar o cargar checkpoint
         start_time = time.time()
+        train_time = 0.0
 
-        optimizer = torch.optim.AdamW(
-            model.parameters(), lr=config.training.learning_rate, weight_decay=1e-5
-        )
-        criterion = nn.CrossEntropyLoss()
+        checkpoint_path = self.checkpoint_dir / f"{model_name}_best.pth"
 
-        trainer = Trainer(
-            model=model,
-            train_loader=dataloaders["train"],
-            val_loader=dataloaders["val"],
-            criterion=criterion,
-            optimizer=optimizer,
-            config=config,
-            device=self.device,
-        )
+        if self.use_checkpoints and checkpoint_path.exists():
+            print(f"[INFO] Cargando checkpoint desde: {checkpoint_path}")
+            checkpoint = torch.load(checkpoint_path, map_location=self.device)
+            model.load_state_dict(checkpoint["model_state_dict"])
+            model.to(self.device)
+            train_time = checkpoint.get("train_time_minutes", 0.0)
+            print(
+                f"[INFO] Modelo cargado (entrenado previamente: {train_time:.1f} min)"
+            )
+        else:
+            if self.use_checkpoints:
+                print(
+                    f"[WARN] Checkpoint no encontrado en {checkpoint_path}, entrenando desde cero..."
+                )
 
-        trainer.train(epochs=config.training.epochs)
+            optimizer = torch.optim.AdamW(
+                model.parameters(), lr=config.training.learning_rate, weight_decay=1e-5
+            )
+            criterion = nn.CrossEntropyLoss()
 
-        train_time = (time.time() - start_time) / 60  # minutos
+            trainer = Trainer(
+                model=model,
+                train_loader=dataloaders["train"],
+                val_loader=dataloaders["val"],
+                criterion=criterion,
+                optimizer=optimizer,
+                config=config,
+                device=self.device,
+            )
+
+            trainer.train(epochs=config.training.epochs)
+            train_time = (time.time() - start_time) / 60  # minutos
 
         # Evaluar en test
         model.eval()
@@ -361,7 +388,7 @@ class ModelBenchmark:
 
     def _benchmark_yolo(self, model_size: str) -> ModelMetrics:
         """Benchmark de modelo YOLOv8."""
-        from yolo.yolo_classifier import YOLOClassifier, YOLOTrainingConfig
+        from yolo.core.yolo_classifier import YOLOClassifier, YOLOTrainingConfig
 
         model_name = f"yolov8{model_size}-cls"
 
@@ -380,12 +407,25 @@ class ModelBenchmark:
             device="0" if self.device == "cuda" else "cpu",
         )
 
-        # Crear y entrenar
+        # Crear y entrenar o cargar
         classifier = YOLOClassifier(model_size=model_size, num_classes=len(classes))
 
-        start_time = time.time()
-        results = classifier.train(str(self.data_dir), config)
-        train_time = (time.time() - start_time) / 60
+        train_time = 0.0
+        checkpoint_path = self.checkpoint_dir / f"yolov8{model_size}-cls_best.pt"
+
+        if self.use_checkpoints and checkpoint_path.exists():
+            print(f"[INFO] Cargando modelo YOLO desde: {checkpoint_path}")
+            classifier.load(str(checkpoint_path))
+            print(f"[INFO] Modelo YOLO cargado")
+        else:
+            if self.use_checkpoints:
+                print(
+                    f"[WARN] Checkpoint YOLO no encontrado en {checkpoint_path}, entrenando desde cero..."
+                )
+
+            start_time = time.time()
+            results = classifier.train(str(self.data_dir), config)
+            train_time = (time.time() - start_time) / 60
 
         # Evaluar
         eval_metrics = classifier.evaluate(str(self.data_dir), split="test")
@@ -681,6 +721,19 @@ def main():
         "--quick", action="store_true", help="Modo rápido (menos épocas)"
     )
 
+    # Checkpoints
+    parser.add_argument(
+        "--use-checkpoints",
+        action="store_true",
+        help="Cargar modelos ya entrenados en lugar de entrenar desde cero",
+    )
+    parser.add_argument(
+        "--checkpoint-dir",
+        type=str,
+        default="checkpoints",
+        help="Directorio donde están los checkpoints guardados",
+    )
+
     args = parser.parse_args()
 
     # Detectar dispositivo si es 'auto'
@@ -711,6 +764,8 @@ def main():
         output_dir=args.output_dir,
         config=config,
         device=args.device,
+        use_checkpoints=args.use_checkpoints,
+        checkpoint_dir=args.checkpoint_dir,
     )
 
     try:

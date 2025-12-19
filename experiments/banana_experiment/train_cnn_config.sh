@@ -1,0 +1,11 @@
+python cnn/train.py \
+    --data_dir ./dataset/train \
+    --model convnext_tiny \
+    --batch_size 32 \
+    --epochs 30 \
+    --lr 5e-05 \
+    --augmentation heavy \
+    --device mps \
+    --experiment_name banana_experiment \
+    --checkpoint_dir ./experiments/banana_experiment/checkpoints \
+    --no_wandb

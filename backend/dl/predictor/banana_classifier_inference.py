@@ -18,7 +18,7 @@ import numpy as np
 from typing import Dict, List, Tuple, Union
 import json
 
-from deep.core.inference import BananaClassifier
+from cnn.core.inference import BananaClassifier
 
 
 class BananaClassifierInference:

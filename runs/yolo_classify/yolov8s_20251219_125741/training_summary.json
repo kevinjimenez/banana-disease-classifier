@@ -1,0 +1,20 @@
+{
+  "model": "yolov8s-cls",
+  "epochs": 50,
+  "batch_size": 32,
+  "learning_rate": 0.001,
+  "image_size": 224,
+  "classes": [
+    "cordana",
+    "fusarium_r4t",
+    "healthy",
+    "moko",
+    "pestalotiopsis",
+    "sigatoka"
+  ],
+  "num_classes": 6,
+  "total_images": 1002,
+  "augmentation": true,
+  "device": "mps",
+  "timestamp": "2025-12-19T13:03:11.401822"
+}

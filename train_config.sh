@@ -1,4 +1,4 @@
-python scripts/train.py \
+python cnn/train.py \
     --data_dir ./dataset/train \
     --model convnext_tiny \
     --batch_size 32 \

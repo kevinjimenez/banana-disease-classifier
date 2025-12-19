@@ -2,14 +2,16 @@
 REPORTE DETALLADO DE ANÁLISIS DE DATASET
 ======================================================================
 
-Total imágenes: 718
-Total clases: 4
+Total imágenes: 787
+Total clases: 6
 
 Distribución por clase:
   sigatoka: 369
   pestalotiopsis: 140
   cordana: 130
   healthy: 79
+  moko: 61
+  fusarium_r4t: 8
 
-Ratio de desbalance: 4.67x
+Ratio de desbalance: 46.12x
 

@@ -197,7 +197,7 @@ def generate_train_command(
 
     # ===== CONSTRUIR COMANDO =====
     cmd_parts = [
-        "python scripts/train.py \\",
+        "python cnn/train.py \\",
         f"    --data_dir {data_dir} \\",
         f"    --model {model} \\",
         f"    --batch_size {batch_size} \\",
