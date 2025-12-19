@@ -143,7 +143,7 @@ async def get_model_info():
 
 @app.post("/predict", response_model=schemas.PredictionResponse, tags=["Prediction"])
 async def predict_image(
-    file: UploadFile = File(...),
+    file: UploadFile,
     return_all_probs: bool = False,
     save_to_db: bool = True,
     db: Session = Depends(get_db),
@@ -159,7 +159,7 @@ async def predict_image(
     if predictor is None:
         raise HTTPException(status_code=503, detail="Modelo no cargado")
 
-    if not file.content_type.startswith("image/"):
+    if file.content_type and not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="Debe ser una imagen")
 
     try:
